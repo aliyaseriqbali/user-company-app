@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../App.css";
 
-export default class UserForm extends Component {
+class UserForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,7 +25,7 @@ export default class UserForm extends Component {
         // saves if component has a chance to unmount
         this.saveStateToLocalStorage();
     }
-    
+
     // Gets the data and parse it 
     hydrateStateWithLocalStorage() {
         // for all items in state
@@ -56,16 +56,23 @@ export default class UserForm extends Component {
     onChangeInput(key, value) {
         this.setState({ [key]: value });
     }
+
+    onChangeDropdown(key, value) {
+        this.setState({ [key]: value });
+    }
+
     // Adds new items to the array
     addItem() {
         // Iterates a unique ID, starting with 1 to the created user
-        const newItem = {
+        const newUser = {
             id: 1 + Math.random(),
-            value: this.state.newItem.slice()
+            value: this.state.newUser,
+            company: this.state.userCompany
+ 
         };
         // copy current list of items, adds the new item to it and updates the state 
         const userList = [...this.state.userList];
-        userList.push(newItem);
+        userList.push(newUser);
         this.setState({
             userList
         });
@@ -75,7 +82,7 @@ export default class UserForm extends Component {
         // copy current list of items
         const userList = [...this.state.userList];
         // filter out the item being deleted and updates 
-        const updatedList = userList.filter(item => item.id !== id);
+        const updatedList = userList.filter(user => user.id !== id);
         this.setState({ userList: updatedList });
         localStorage.setItem("userList", JSON.stringify(updatedList));
     }
@@ -90,39 +97,54 @@ export default class UserForm extends Component {
                         margin: "auto"
                     }}
                 >
-                    Add a user to the list
-          <br />
+                    <h3>Add a user to the list</h3>
+
                     <form className="form-inline">
                         <input
                             className="form-control"
                             type="text"
                             placeholder="Type username"
-                            value={this.state.newItem}
-                            onChange={e => this.onChangeInput("newItem", e.target.value)}
+                            value={this.state.newUser}
+                            onChange={e => this.onChangeInput("newUser", e.target.value)}
                         />
+
+                        <select 
+                        className="select-company"
+                        name="Company" 
+                        id="dropdown"
+                        value={this.state.userCompany}
+                        onChange={e => this.onChangeDropdown("userCompany", e.target.value)}
+                        >
+                        <option className="company-option" value="" selected="selected"> </option>
+                            {JSON.parse(localStorage.getItem("companyList")).map(fbb =>
+                                <option className="company-option" key={fbb.key} value={fbb.key}>{fbb.value}</option>
+                            )};
+                        </select>
+
                         <button
                             className="btn btn-secondary"
                             onClick={() => this.addItem()}
-                            disabled={!this.state.newItem}
+                            disabled={!this.state.newUser}
                         >
                             Add User
                         </button>
                     </form>
+
                     <table className="table">
                         <thead>
                             <tr>
-                                <th scope="col">Username</th>
+                                <th scope="col">User</th>
                                 <th scope="col">Company</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.userList.map(item => {
+                            {this.state.userList.map(user => {
                                 return (
                                     <tr>
-                                        <th key={item.id}>{item.value}</th>
-                                        <td>företag</td>
-                                        <td> <button className="close" onClick={() => this.deleteItem(item.id)}>x</button></td>
+                                        <td key={user.id}>{user.value}</td>
+                                        <td>{user.company}</td>
+                                        <td> <button className="close" onClick={() => this.deleteItem(user.id)}>x</button></td>
                                     </tr>
                                 )
                             })}
@@ -133,3 +155,5 @@ export default class UserForm extends Component {
         );
     }
 }
+
+export default UserForm
