@@ -50,7 +50,7 @@ class CompanyForm extends Component {
     onChangeInput(key, value) {
         this.setState({ [key]: value });
     }
-    addItem() {
+    addCompany() {
         const newCompany = {
             id: 1 + Math.random(),
             value: this.state.newCompany
@@ -62,7 +62,7 @@ class CompanyForm extends Component {
         });
 
     }
-    deleteItem(id) {
+    deleteCompany(id) {
         const companyList = [...this.state.companyList];
         const updatedList = companyList.filter(company => company.id !== id);
         this.setState({ companyList: updatedList });
@@ -123,19 +123,19 @@ class CompanyForm extends Component {
                     />
                     <button
                         className="btn btn-secondary"
-                        onClick={() => this.addItem()}
+                        onClick={() => this.addCompany()}
                         disabled={!this.state.newCompany}
                     >
                         Add Company
                         </button>
                 </form>
-                <h5 className="company-header">Company</h5>
+                <p className="company-header">Company</p>
                 <div className="company-table">
                     {this.state.companyList.map(company => {
                         return (
                             <ul key={company.id}>
                                 <li key={company.id} onClick={() => this.toggle(company)}>{company.value}
-                                    <button className="close remove-user" onClick={() => this.deleteItem(company.id)}>x</button>
+                                    <button className="close remove-user" onClick={() => this.deleteCompany(company.id)}>x</button>
                                 </li>
                                 <li>
                                     <Collapse isOpen={company.id === this.state.collapse}>

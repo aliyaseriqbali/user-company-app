@@ -32,6 +32,7 @@ table{
 }
 .company-header {
 font-weight: bold;
+font-size: 16px;
 }
 .company-table ul {
   border-top: 1px solid lightgray;

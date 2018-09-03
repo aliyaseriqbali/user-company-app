@@ -53,7 +53,7 @@ class UserForm extends Component {
         this.setState({ [key]: value });
     }
 
-    addItem() {
+    addUser() {
         const newUser = {
             id: 1 + Math.random(),
             value: this.state.newUser,
@@ -68,7 +68,7 @@ class UserForm extends Component {
         this.setState({newUser: ""})
     }
 
-    deleteItem(id) {
+    deleteUser(id) {
         const userList = [...this.state.userList];
         const updatedList = userList.filter(user => user.id !== id);
         this.setState({ userList: updatedList });
@@ -103,7 +103,7 @@ class UserForm extends Component {
 
                         <button
                             className="btn btn-secondary"
-                            onClick={() => this.addItem()}
+                            onClick={() => this.addUser()}
                             disabled={!this.state.newUser}
                         >
                             Add User
@@ -124,7 +124,7 @@ class UserForm extends Component {
                                     <tr key={user.id}>
                                         <td key={user.id}>{user.value}</td>
                                         <td>{user.company}</td>
-                                        <td> <button className="close" onClick={() => this.deleteItem(user.id)}>x</button></td>
+                                        <td> <button className="close" onClick={() => this.deleteUser(user.id)}>x</button></td>
                                     </tr>
                                 )
                             })}
