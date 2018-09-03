@@ -4,7 +4,8 @@ import { Route } from 'react-router-dom'
 import logo from "../logo.svg";
 import "../App.css";
 import UserForm from './user-form';
-import CompanyForm from './company-form'
+import CompanyForm from './company-form';
+import defaultUser from './default-user'
 
 class MainLayout extends Component {
     render() {
@@ -23,6 +24,9 @@ class MainLayout extends Component {
                             <li className="navbar-item">
                                 <a href="/companies" className="nav-link">Companies</a>
                             </li>
+                            <li className="navbar-item">
+                                <a href="/default-user" className="nav-link">Users with no companies</a>
+                            </li>
                         </ul>
                     </nav>
                 </aside>
@@ -30,8 +34,8 @@ class MainLayout extends Component {
                     <Router>
                         <div>
                             <Route path="/users" component={UserForm} exact />
-
                             <Route path="/companies" component={CompanyForm} exact />
+                            <Route path="/default-user" component={defaultUser} exact />
                         </div>
                     </Router>
                 </main>

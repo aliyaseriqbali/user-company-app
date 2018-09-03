@@ -5,6 +5,8 @@ class UserForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userCompany:"",
+            newUser:"",
             userList: []
         };
     }
@@ -76,6 +78,7 @@ class UserForm extends Component {
         this.setState({
             userList
         });
+        this.setState({newUser: ""})
     }
 
     deleteItem(id) {
@@ -89,14 +92,6 @@ class UserForm extends Component {
     render() {
         return (
             <div className="user-form">
-                <div
-                    style={{
-                        padding: 50,
-                        textAlign: "left",
-                        maxWidth: 500,
-                        margin: "auto"
-                    }}
-                >
                     <h3>Add a user to the list</h3>
 
                     <form className="form-inline">
@@ -115,9 +110,9 @@ class UserForm extends Component {
                         value={this.state.userCompany}
                         onChange={e => this.onChangeDropdown("userCompany", e.target.value)}
                         >
-                        <option className="company-option" value="" selected="selected"> </option>
-                            {JSON.parse(localStorage.getItem("companyList")).map(fbb =>
-                                <option className="company-option" key={fbb.key} value={fbb.key}>{fbb.value}</option>
+                        <option className="company-option" value=""> </option>
+                            {JSON.parse(localStorage.getItem("companyList")).map(user =>
+                                <option className="company-option" key={user.key} value={user.key} key={user.id}>{user.value}</option>
                             )};
                         </select>
 
@@ -141,7 +136,7 @@ class UserForm extends Component {
                         <tbody>
                             {this.state.userList.map(user => {
                                 return (
-                                    <tr>
+                                    <tr key={user.id}>
                                         <td key={user.id}>{user.value}</td>
                                         <td>{user.company}</td>
                                         <td> <button className="close" onClick={() => this.deleteItem(user.id)}>x</button></td>
@@ -150,7 +145,6 @@ class UserForm extends Component {
                             })}
                         </tbody>
                     </table>
-                </div>
             </div>
         );
     }

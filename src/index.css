@@ -8,9 +8,50 @@ body {
   width: 135px;
   height: 38px;
   border-radius: 9px;
-  margin: 10px;
+  margin-left: 10px;
 }
 
-.table{
+table{
   margin-top: 10px;
+}
+
+.company-form, 
+.user-form,
+.default-user{
+  padding: 50px;
+  text-align: left;
+  max-width: 500px;
+  margin: auto;
+}
+
+.company-table {
+  border-top: 2px solid lightgray;
+  padding: 8px;
+  border-left: none;
+  
+}
+.company-header {
+font-weight: bold;
+
+}
+.company-table ul {
+  border-top: 1px solid lightgray;
+  padding: 5px;
+  cursor: pointer;
+}
+.company-table ul:first-child{
+border-top: none;
+}
+.company-table li, .remove-user {
+  margin: 0 10px 0 0 ;
+  list-style: none;
+}
+
+.company-user{
+  border-bottom: 1px solid lightgray;
+  padding: 5px;
+}
+
+.btn-secondary{
+  margin: 10px;
 }
