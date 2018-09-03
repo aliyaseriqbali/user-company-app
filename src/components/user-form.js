@@ -13,7 +13,6 @@ class UserForm extends Component {
 
     componentDidMount() {
         this.hydrateStateWithLocalStorage();
-        // add event listener to save state to localStorage before updating the page
         window.addEventListener(
             "beforeunload",
             this.saveStateToLocalStorage.bind(this)
@@ -24,37 +23,28 @@ class UserForm extends Component {
             "beforeunload",
             this.saveStateToLocalStorage.bind(this)
         );
-        // saves if component has a chance to unmount
         this.saveStateToLocalStorage();
     }
 
-    // Gets the data and parse it 
     hydrateStateWithLocalStorage() {
-        // for all items in state
         for (let key in this.state) {
-            // if the key exists in localStorage
             if (localStorage.hasOwnProperty(key)) {
-                // get the key's value from localStorage
                 let value = localStorage.getItem(key);
-                // parse the localStorage string and setState
                 try {
                     value = JSON.parse(value);
                     this.setState({ [key]: value });
                 } catch (e) {
-                    // handle empty string
                     this.setState({ [key]: value });
                 }
             }
         }
     }
 
-    // save to localStorage (as a string, because its required by JSON)
     saveStateToLocalStorage() {
         for (let key in this.state) {
             localStorage.setItem(key, JSON.stringify(this.state[key]));
         }
     }
-    // Updating the state
     onChangeInput(key, value) {
         this.setState({ [key]: value });
     }
@@ -63,16 +53,13 @@ class UserForm extends Component {
         this.setState({ [key]: value });
     }
 
-    // Adds new items to the array
     addItem() {
-        // Iterates a unique ID, starting with 1 to the created user
         const newUser = {
             id: 1 + Math.random(),
             value: this.state.newUser,
             company: this.state.userCompany
  
         };
-        // copy current list of items, adds the new item to it and updates the state 
         const userList = [...this.state.userList];
         userList.push(newUser);
         this.setState({
@@ -82,9 +69,7 @@ class UserForm extends Component {
     }
 
     deleteItem(id) {
-        // copy current list of items
         const userList = [...this.state.userList];
-        // filter out the item being deleted and updates 
         const updatedList = userList.filter(user => user.id !== id);
         this.setState({ userList: updatedList });
         localStorage.setItem("userList", JSON.stringify(updatedList));

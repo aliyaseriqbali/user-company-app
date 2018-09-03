@@ -13,7 +13,7 @@ class MainLayout extends Component {
             <div className="main-layout">
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React LocalStorage Tutorial</h1>
+                    <h1 className="App-title">Welcome to React LocalStorage</h1>
                 </header>
                 <aside>
                     <nav className="navbar navbar-expand-sm bg-light navbar-light">

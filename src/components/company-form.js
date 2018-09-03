@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import "../App.css";
 import { Collapse } from 'reactstrap';
 
-
-// import userList from './user-form'
 class CompanyForm extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +16,6 @@ class CompanyForm extends Component {
 
     componentDidMount() {
         this.hydrateStateWithLocalStorage();
-        // add event listener to save state to localStorage before updating the page
         window.addEventListener(
             "beforeunload",
             this.saveStateToLocalStorage.bind(this)
@@ -30,46 +27,34 @@ class CompanyForm extends Component {
             "beforeunload",
             this.saveStateToLocalStorage.bind(this)
         );
-        // saves if component has a chance to unmount
         this.saveStateToLocalStorage();
     }
-    // Gets the data and parse it 
     hydrateStateWithLocalStorage() {
-        // for all items in state
         for (let key in this.state) {
-            // if the key exists in localStorage
             if (localStorage.hasOwnProperty(key)) {
-                // get the key's value from localStorage
                 let value = localStorage.getItem(key);
-                // parse the localStorage string and setState
                 try {
                     value = JSON.parse(value);
                     this.setState({ [key]: value });
                 } catch (e) {
-                    // handle empty string
                     this.setState({ [key]: value });
                 }
             }
         }
     }
-    // save to localStorage (as a string, because its required by JSON)
     saveStateToLocalStorage() {
         for (let key in this.state) {
             localStorage.setItem(key, JSON.stringify(this.state[key]));
         }
     }
-    // Updating the state
     onChangeInput(key, value) {
         this.setState({ [key]: value });
     }
-    // Adds new items to the array
     addItem() {
-        // Iterates a unique ID, starting with 1 to the created user
         const newCompany = {
             id: 1 + Math.random(),
             value: this.state.newCompany
         };
-        // copy current list of items, adds the new item to it and updates the state 
         const companyList = [...this.state.companyList];
         companyList.push(newCompany);
         this.setState({
@@ -78,15 +63,13 @@ class CompanyForm extends Component {
 
     }
     deleteItem(id) {
-        // copy current list of items
         const companyList = [...this.state.companyList];
-        // filter out the item being deleted and updates 
         const updatedList = companyList.filter(company => company.id !== id);
         this.setState({ companyList: updatedList });
         localStorage.setItem("companyList", JSON.stringify(updatedList));
     }
 
-    deleteUser(userId) {
+    deleteUserName(userId) {
         let userList = JSON.parse(localStorage.getItem("userList"))
 
         let companyID = ""
@@ -146,37 +129,27 @@ class CompanyForm extends Component {
                         Add Company
                         </button>
                 </form>
-                {/* <table className="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Company</th>
-                        </tr>
-                    </thead>
-                     */}
                 <h5 className="company-header">Company</h5>
                 <div className="company-table">
                     {this.state.companyList.map(company => {
-                        return (  
+                        return (
                             <ul key={company.id}>
                                 <li key={company.id} onClick={() => this.toggle(company)}>{company.value}
                                     <button className="close remove-user" onClick={() => this.deleteItem(company.id)}>x</button>
                                 </li>
                                 <li>
                                     <Collapse isOpen={company.id === this.state.collapse}>
-
                                         {this.state.companyUserList.map(user =>
                                             <li className="company-user" key={company.id + user.id}>{user.value}
-                                                <button className="close remove-user" onClick={() => this.deleteUser(user.id)}>x</button>
+                                                <button className="close remove-user" onClick={() => this.deleteUserName(user.id)}>x</button>
                                             </li>
                                         )}
-
                                     </Collapse>
                                 </li>
                             </ul>
                         )
                     })}
                 </div>
-                {/* </table> */}
             </div>
         );
     }

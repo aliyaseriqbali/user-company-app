@@ -5,7 +5,7 @@ class defaultUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userCompany:"",
+            userCompany: "",
             userName: "",
             selectedUser: {},
             userList: []
@@ -14,7 +14,6 @@ class defaultUser extends Component {
 
     componentDidMount() {
         this.hydrateStateWithLocalStorage();
-        // add event listener to save state to localStorage before updating the page
         window.addEventListener(
             "beforeunload",
             this.saveStateToLocalStorage.bind(this)
@@ -25,31 +24,24 @@ class defaultUser extends Component {
             "beforeunload",
             this.saveStateToLocalStorage.bind(this)
         );
-        // saves if component has a chance to unmount
         this.saveStateToLocalStorage();
     }
 
-    // Gets the data and parse it 
     hydrateStateWithLocalStorage() {
-        // for all items in state
         for (let key in this.state) {
-            // if the key exists in localStorage
             if (localStorage.hasOwnProperty(key)) {
-                // get the key's value from localStorage
                 let value = localStorage.getItem(key);
-                // parse the localStorage string and setState
                 try {
                     value = JSON.parse(value);
                     this.setState({ [key]: value });
                 } catch (e) {
-                    // handle empty string
+                    
                     this.setState({ [key]: value });
                 }
             }
         }
     }
 
-    // save to localStorage (as a string, because its required by JSON)
     saveStateToLocalStorage() {
         for (let key in this.state) {
             localStorage.setItem(key, JSON.stringify(this.state[key]));
@@ -64,20 +56,17 @@ class defaultUser extends Component {
         this.setState({ [key]: value });
     }
 
-
     updateUser() {
         let userList = JSON.parse(localStorage.getItem("userList"))
-        
+
         for (let user in userList) {
             if (userList[user].id === this.state.selectedUser.id) {
                 userList[user].company = this.state.userCompany
             }
         }
-        this.setState({userList:userList})
-        this.setState({userName: ""})
-        this.setState({userCompany: ""})
+        this.setState({ userList: userList })
+        this.setState({ userName: "" })
     }
-
 
     render() {
         return (
