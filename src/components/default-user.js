@@ -21,6 +21,7 @@ class defaultUser extends Component {
             this.saveStateToLocalStorage.bind(this)
         );
     }
+
     componentWillUnmount() {
         window.removeEventListener(
             "beforeunload",
@@ -49,6 +50,7 @@ class defaultUser extends Component {
             localStorage.setItem(key, JSON.stringify(this.state[key]));
         }
     }
+
     selectUser(user) {
         this.setState({ userName: user.value })
         this.setState({ selectedUser: user })
@@ -65,11 +67,10 @@ class defaultUser extends Component {
 
     updateUser() {
         let userList = this.state.userList
-
         for (let user in userList) {
             if (userList[user].id === this.state.selectedUser.id) {
                 userList[user].company = this.state.selectedCompanyId
-                userList[user].value =this.state.userName
+                userList[user].value = this.state.userName
             }
         }
         this.setState({ userList: userList })
@@ -103,14 +104,13 @@ class defaultUser extends Component {
                             <option className="company-option" value={company.value} key={company.id} id={company.id}>{company.value}</option>
                         )};
                         </select>
-
                     <button
                         className="btn btn-secondary"
                         onClick={() => this.updateUser()}
                         disabled={!this.state.selectedCompanyId}
                     >
                         Update User
-                        </button>
+                    </button>
                 </form>
                 <table className="table">
                     <thead>

@@ -9,7 +9,8 @@ class CompanyForm extends Component {
             userList: [],
             companyList: [],
             collapse: "",
-            companyUserList: []
+            companyUserList: [],
+            newCompany: ""
         };
         this.toggle = this.toggle.bind(this);
     }
@@ -29,6 +30,7 @@ class CompanyForm extends Component {
         );
         this.saveStateToLocalStorage();
     }
+
     hydrateStateWithLocalStorage() {
         for (let key in this.state) {
             if (localStorage.hasOwnProperty(key)) {
@@ -42,14 +44,17 @@ class CompanyForm extends Component {
             }
         }
     }
+
     saveStateToLocalStorage() {
         for (let key in this.state) {
             localStorage.setItem(key, JSON.stringify(this.state[key]));
         }
     }
+
     onChangeInput(key, value) {
         this.setState({ [key]: value });
     }
+
     addCompany() {
         const newCompany = {
             id: 1 + Math.random(),
@@ -60,8 +65,8 @@ class CompanyForm extends Component {
         this.setState({
             companyList
         });
-
     }
+
     deleteCompany(id) {
         const companyList = [...this.state.companyList];
         const updatedList = companyList.filter(company => company.id !== id);
@@ -71,7 +76,6 @@ class CompanyForm extends Component {
 
     removeCompanyFromUser(userId) {
         let userList = this.state.userList
-
         let companyID = ""
         for (let user in userList) {
             if (userList[user].id === userId) {
@@ -99,6 +103,7 @@ class CompanyForm extends Component {
         if (companyUserList === undefined || companyUserList.length === 0) {
             return
         }
+
         this.setState({ companyUserList: companyUserList })
 
         if (this.state.collapse === company.id) {
@@ -126,7 +131,7 @@ class CompanyForm extends Component {
                         disabled={!this.state.newCompany}
                     >
                         Add Company
-                        </button>
+                    </button>
                 </form>
                 <p className="company-header">Company</p>
                 <div className="company-table">
@@ -136,13 +141,13 @@ class CompanyForm extends Component {
                                 <li key={company.id} onClick={() => this.toggle(company)}>{company.value}
                                     <button className="close remove-user" onClick={() => this.deleteCompany(company.id)}>x</button>
                                 </li>
-                                    <Collapse isOpen={company.id === this.state.collapse}>
-                                        {this.state.companyUserList.map(user =>
-                                            <li className="company-user" key={company.id + user.id}>{user.value}
-                                                <button className="close remove-user" onClick={() => this.removeCompanyFromUser(user.id)}>x</button>
-                                            </li>
-                                        )}
-                                    </Collapse>
+                                <Collapse isOpen={company.id === this.state.collapse}>
+                                    {this.state.companyUserList.map(user =>
+                                        <li className="company-user" key={company.id + user.id}>{user.value}
+                                            <button className="close remove-user" onClick={() => this.removeCompanyFromUser(user.id)}>x</button>
+                                        </li>
+                                    )}
+                                </Collapse>
                             </ul>
                         )
                     })}
