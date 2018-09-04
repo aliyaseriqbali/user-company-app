@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import "../App.css";
+import "../index.css";
 import { Collapse } from 'reactstrap';
 
 class CompanyForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userList: [],
             companyList: [],
             collapse: "",
             companyUserList: []
         };
         this.toggle = this.toggle.bind(this);
-
     }
 
     componentDidMount() {
@@ -69,8 +69,8 @@ class CompanyForm extends Component {
         localStorage.setItem("companyList", JSON.stringify(updatedList));
     }
 
-    deleteUserName(userId) {
-        let userList = JSON.parse(localStorage.getItem("userList"))
+    removeCompanyFromUser(userId) {
+        let userList = this.state.userList
 
         let companyID = ""
         for (let user in userList) {
@@ -80,8 +80,7 @@ class CompanyForm extends Component {
             }
         }
 
-        localStorage.setItem("userList", JSON.stringify(userList));
-        const updatedCompanyUserList = JSON.parse(localStorage.getItem("userList")).filter(
+        const updatedCompanyUserList = this.state.userList.filter(
             user => user.company === companyID
         )
 
@@ -93,8 +92,8 @@ class CompanyForm extends Component {
     }
 
     toggle(company) {
-        const companyUserList = JSON.parse(localStorage.getItem("userList")).filter(
-            user => user.company === company.value
+        const companyUserList = this.state.userList.filter(
+            user => user.company == company.id
         )
 
         if (companyUserList === undefined || companyUserList.length === 0) {
@@ -137,15 +136,13 @@ class CompanyForm extends Component {
                                 <li key={company.id} onClick={() => this.toggle(company)}>{company.value}
                                     <button className="close remove-user" onClick={() => this.deleteCompany(company.id)}>x</button>
                                 </li>
-                                <li>
                                     <Collapse isOpen={company.id === this.state.collapse}>
                                         {this.state.companyUserList.map(user =>
                                             <li className="company-user" key={company.id + user.id}>{user.value}
-                                                <button className="close remove-user" onClick={() => this.deleteUserName(user.id)}>x</button>
+                                                <button className="close remove-user" onClick={() => this.removeCompanyFromUser(user.id)}>x</button>
                                             </li>
                                         )}
                                     </Collapse>
-                                </li>
                             </ul>
                         )
                     })}

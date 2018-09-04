@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import "../App.css";
+import "../index.css";
 
 class defaultUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userCompany: "",
+            companyList: [],
+            selectedCompanyId: 0,
+            selectedCompany: "",
             userName: "",
             selectedUser: {},
             userList: []
@@ -35,7 +37,7 @@ class defaultUser extends Component {
                     value = JSON.parse(value);
                     this.setState({ [key]: value });
                 } catch (e) {
-                    
+
                     this.setState({ [key]: value });
                 }
             }
@@ -52,20 +54,28 @@ class defaultUser extends Component {
         this.setState({ selectedUser: user })
     }
 
-    onChangeDropdown(key, value) {
+    onChangeInput(key, value) {
         this.setState({ [key]: value });
     }
 
+    onChangeDropdown(key, value, companyId) {
+        this.setState({ [key]: value });
+        this.setState({ selectedCompanyId: companyId })
+    }
+
     updateUser() {
-        let userList = JSON.parse(localStorage.getItem("userList"))
+        let userList = this.state.userList
 
         for (let user in userList) {
             if (userList[user].id === this.state.selectedUser.id) {
-                userList[user].company = this.state.userCompany
+                userList[user].company = this.state.selectedCompanyId
+                userList[user].value =this.state.userName
             }
         }
         this.setState({ userList: userList })
         this.setState({ userName: "" })
+        this.setState({ selectedCompany: "" })
+        this.setState({ selectedCompanyId: 0 })
     }
 
     render() {
@@ -85,19 +95,19 @@ class defaultUser extends Component {
                         className="select-company"
                         name="Company"
                         id="dropdown"
-                        value={this.state.userCompany}
-                        onChange={e => this.onChangeDropdown("userCompany", e.target.value)}
+                        value={this.state.selectedCompany}
+                        onChange={e => this.onChangeDropdown("selectedCompany", e.target.value, e.target.options[e.target.selectedIndex].id)}
                     >
-                        <option className="company-option" value=""> </option>
-                        {JSON.parse(localStorage.getItem("companyList")).map(user =>
-                            <option className="company-option" key={user.key} value={user.key} key={user.id}>{user.value}</option>
+                        <option className="company-option" key={0} id={0} value={0}> </option>
+                        {this.state.companyList.map(company =>
+                            <option className="company-option" value={company.value} key={company.id} id={company.id}>{company.value}</option>
                         )};
                         </select>
 
                     <button
                         className="btn btn-secondary"
                         onClick={() => this.updateUser()}
-                        disabled={!this.state.userCompany}
+                        disabled={!this.state.selectedCompanyId}
                     >
                         Update User
                         </button>
@@ -110,7 +120,7 @@ class defaultUser extends Component {
                     </thead>
                     <tbody>
                         {this.state.userList.filter(
-                            user => user.company === undefined || user.company === "")
+                            user => user.company === undefined || user.company == 0)
                             .map(user => {
                                 return (
                                     <tr key={user.id}>

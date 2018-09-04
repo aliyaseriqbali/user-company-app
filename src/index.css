@@ -18,10 +18,9 @@ table{
 .company-form, 
 .user-form,
 .default-user{
-  padding: 50px;
+  padding: 25px;
   text-align: left;
   max-width: 500px;
-  margin: auto;
 }
 
 .company-table {
@@ -52,4 +51,28 @@ border-top: none;
 }
 .btn-secondary{
   margin: 10px;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
